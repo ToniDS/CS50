@@ -1,4 +1,5 @@
 #include <cs50.h>
+//#include <cstddef>
 #include <stdio.h>
 #include <string.h>
 
@@ -69,7 +70,7 @@ bool vote(string name)
     for (int i = 0; i < candidate_count; i++)
     {
         candidate this_candidate = candidates[i];
-        printf("%s\n", this_candidate.name);
+        //printf("%s\n", this_candidate.name);
         if (strcmp(name,this_candidate.name)== 0) 
         {
             candidates[i].votes ++;
@@ -83,17 +84,45 @@ bool vote(string name)
 void print_winner(void)
 {
     int max = 0;
-    string winning_candidate; 
+    string winning_candidate[candidate_count]; 
     for (int i = 0; i < candidate_count; i++)
     {
         candidate this_candidate = candidates[i];
-        printf("%s has %i votes. ", this_candidate.name, this_candidate.votes);
-        if (this_candidate.votes >= max)
+        //printf("%s has %i votes. ", this_candidate.name, this_candidate.votes);
+        if (this_candidate.votes > max)
         {
             max = this_candidate.votes;
-            winning_candidate = this_candidate.name;
+            winning_candidate[0] = this_candidate.name;
+            for (int j = 1; j < candidate_count; j++) {
+                if (winning_candidate[j] != NULL)
+                {
+                    winning_candidate[j] = NULL;
+                }
+            }
+        }
+        else if (this_candidate.votes == max)
+        {
+            for (int j = 0; j < candidate_count; j++)
+            {
+                if (winning_candidate[j] == NULL)
+                {
+                    winning_candidate[j] = this_candidate.name;
+                    break;
+                }
+            }
+
         }
     }
-    printf("Winning candidate: %s", winning_candidate);
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (winning_candidate[i] != NULL)
+        {
+            if (i != 0){
+                printf("\n");
+            }
+            printf("%s", winning_candidate[i]);
+        }
+    
+    }
 }
 
