@@ -1,6 +1,7 @@
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 // Max voters and candidates
 #define MAX_VOTERS 100
@@ -78,6 +79,7 @@ int main(int argc, string argv[])
                 printf("Invalid vote.\n");
                 return 4;
             }
+            printf("[%i][%i]: %i\n", i, j, preferences[i][j]);
         }
 
         printf("\n");
@@ -132,9 +134,13 @@ bool vote(int voter, int rank, string name)
     {
         if(strcmp(candidates[i].name, name) == 0)
         {
-            
-            preferences[voter][rank-1] = i;
+            printf("Name %s is the same as %s\n", name, candidates[i].name );            
+            preferences[voter][rank] = i;
             return true;
+        }
+        else 
+        {
+            continue;
         }
     }
     return false;
@@ -146,7 +152,7 @@ void tabulate(void)
     int vote;
     for (int i = 0; i < voter_count; i++)
     {
-        for (int rank = 0; rank < candidate_count; rank ++)
+        for (int rank = 0; rank < candidate_count; rank++)
         {
             vote = preferences[i][rank];
             if (!(candidates[vote].eliminated))
@@ -166,7 +172,8 @@ bool print_winner(void)
     for (int i = 0; i < candidate_count; i++)
     {
         printf("%s:%i\n", candidates[i].name, candidates[i].votes);
-        if (candidates[i].votes > candidate_count/2){
+        printf("Decision boundary: %i\n", voter_count/2);
+        if (candidates[i].votes > voter_count/2){
             printf("%s", candidates[i].name);
             return true;
         }
@@ -185,7 +192,7 @@ int find_min(void)
             min = candidates[i].votes;
         }
     }
-    return 0;
+    return min;
 }
 
 // Return true if the election is tied between all candidates, false otherwise
