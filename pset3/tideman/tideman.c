@@ -116,11 +116,18 @@ void record_preferences(int ranks[])
 {
     for (int i = 0; i < candidate_count -1; i ++)
     {
-        if (preferences[ranks[i]][ranks[i+1]] == 0)
+        for (int j = 1; j < candidate_count -i ; j ++)
         {
-            preferences[ranks[i]][ranks[i+1]] = 1;
-        } else {
-            preferences[ranks[i]][ranks[i+1]] ++;
+            printf("Rank %i\n", i);
+            printf("Second Rank %i\n", i+j);
+            if (preferences[ranks[i]][ranks[i+j]] == 0)
+            {
+                printf("First vote for %i over %i\n", ranks[i], ranks[i+j]);
+                preferences[ranks[i]][ranks[i+j]] = 1;
+            } else {
+                printf("Additional vote for %i over %i\n", ranks[i], ranks[i+j]);
+                preferences[ranks[i]][ranks[i+j]] ++;
+            }
         }
     }    
 }
@@ -129,15 +136,24 @@ void record_preferences(int ranks[])
 void add_pairs(void)
 {
     pair new_pair;
+
     for (int i = 0; i < candidate_count; i ++)
     {
-        for (int j = 0; i < candidate_count; i++)
+        for (int j = 0; j < candidate_count; j++)
         {
+            printf("Preference of %i over %i: %i\n", i, j, preferences[i][j]);
+            if ((preferences[i][j] > 0) && (i != j))
+            {
                 new_pair.winner = i;
                 new_pair.loser = j;
-                pairs[pair_count - 1] = new_pair;
+                pairs[pair_count] = new_pair;
                 pair_count ++;
+            }
         }
+    }
+    for (int i = 0; i < pair_count; i++)
+    {
+        printf("Pair: %i - %i\n", pairs[i].winner, pairs[i].loser);
     }
 }
 
@@ -178,6 +194,7 @@ void sort_pairs(void)
             printf("%i - %i: %i\n", pairs[i].winner, pairs[i].loser,
             preferences[pairs[i].winner][pairs[i].loser]);
         }
+        printf("Next round!\n");
     }  
 }
 
