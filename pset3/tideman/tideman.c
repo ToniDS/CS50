@@ -250,7 +250,7 @@ void print_winner(void)
        for (int j = 0; j < candidate_count; j++)
        {
            if (locked[i][j]){
-               winner[i] = true;
+               winner[j] = true;
            }
        }
    } 
