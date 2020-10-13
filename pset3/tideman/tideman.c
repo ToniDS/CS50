@@ -210,21 +210,26 @@ void lock_pairs(void)
         //not winner in looser and looser in winner
         winner = pairs[i].winner;
         looser = pairs[i].loser;
+        loop_lose = false;
+        loop_win = false;
         
         for (int j = 0; j < candidate_count; j ++) 
         {
             if (locked[looser][j] == true)
             {
                 loop_lose = true;
+                printf("Looser is in winner\n");
             }
             if (locked[j][winner] == true) 
             {
                 loop_win = true;
+                printf("Winner is in loser\n");
             }
         }
 
         if ((!loop_win) || (!loop_lose)) 
         {
+            printf("one is not \n");
             locked[pairs[i].winner][pairs[i].loser] = true;
         }
     }
